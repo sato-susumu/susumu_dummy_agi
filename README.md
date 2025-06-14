@@ -18,11 +18,18 @@ ROS2 ダミーAGIパッケージ - トピックリレー機能
 - バックグラウンド処理とリアルタイム進捗通知
 - エラーハンドリングとタイムアウト制御
 
+### TopicMonitor（監視ツール）
+- `/from_human`と`/to_human`トピックのリアルタイム監視
+- カラフルなCLI表示（richライブラリ使用）
+- メッセージ統計とメッセージ履歴表示
+- 並列表示によるトピック比較
+
 ## 依存関係
 
 - ROS2 (Humbleでテスト済み)
 - Python 3.8+
 - rclpy
+- rich (CLIディスプレイ用)
 
 ## インストール
 
@@ -57,6 +64,14 @@ ros2 run susumu_dummy_agi relay_node
 ros2 run susumu_dummy_agi claude_processor_node
 ```
 
+### トピック監視ツールの実行
+
+```bash
+ros2 run susumu_dummy_agi topic_monitor
+```
+
+リアルタイムで両トピックの状態を監視できます。統計情報とメッセージ履歴を美しいカラー表示で確認できます。
+
 ### トピック
 
 両ノード共通:
@@ -65,10 +80,24 @@ ros2 run susumu_dummy_agi claude_processor_node
 
 ### テスト方法
 
-別ターミナルでメッセージを送信:
+1. **基本的な動作確認:**
+
 ```bash
-# メッセージ送信
-ros2 topic pub /from_human std_msgs/String "data: 'こんにちは、Claudeで翻訳してください'"
+# ターミナル1: リレーノード起動
+ros2 run susumu_dummy_agi relay_node
+
+# ターミナル2: モニター起動（推奨）
+ros2 run susumu_dummy_agi topic_monitor
+
+# ターミナル3: メッセージ送信（1回のみ）
+ros2 topic pub --once /from_human std_msgs/String "data: 'Hello World!'"
+```
+
+2. **従来のecho方式:**
+
+```bash
+# メッセージ送信（1回のみ）
+ros2 topic pub --once /from_human std_msgs/String "data: 'こんにちは、Claudeで翻訳してください'"
 
 # メッセージ受信確認
 ros2 topic echo /to_human

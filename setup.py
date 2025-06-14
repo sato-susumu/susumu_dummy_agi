@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'rich'],
     zip_safe=True,
     maintainer='Your Name',
     maintainer_email='your_email@example.com',
@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'relay_node = susumu_dummy_agi.relay_node:main',
             'claude_processor_node = susumu_dummy_agi.claude_processor_node:main',
+            'topic_monitor = susumu_dummy_agi.topic_monitor:main',
         ],
     },
 )

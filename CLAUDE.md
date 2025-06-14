@@ -1,37 +1,37 @@
 # susumu_dummy_agi
 
-ROS2�ñ��(n���ա��
+ROS2パッケージ用のメモリファイル
 
-## �����Ȃ�
+## プロジェクト概要
 
-Sn�ñ��oROS2��ïn���_��ЛY����AGI�ñ��gY
+このパッケージは、ROS2トピックのリレー機能を提供するダミーAGIパッケージです。
 
-## �����L��
+## ビルド・実行方法
 
-### ���
+### ビルド
 ```bash
-# ROS2�������n���ǣ���g�L
+# ROS2ワークスペースのルートディレクトリで実行
 cd /home/taro/ros2_ws
 colcon build
 ```
 
-### �L
+### 実行
 ```bash
-# ������
+# 環境をソース
 source install/setup.bash
 
-# �����ɒ�L
+# リレーノードを実行
 ros2 run susumu_dummy_agi relay_node
 ```
 
-## �ñ���
+## パッケージ構成
 
-- `susumu_dummy_agi/relay_node.py`: ��n�����ɟ�
-- `test/`: ƹ�ա��
-- `package.xml`: ROS2�ñ����
-- `setup.py`: Python ��Ȣ��ա��
+- `susumu_dummy_agi/relay_node.py`: メインのリレーノード実装
+- `test/`: テストファイル群
+- `package.xml`: ROS2パッケージ定義
+- `setup.py`: Python セットアップファイル
 
-## �z��
+## 開発メモ
 
-- colcon buildo�Z `/home/taro/ros2_ws` g�LY�Sh
-- ��ɢ�ƣա��build/, install/, log/	ogitignorek+~�fD~Y
+- colcon buildは必ず `/home/taro/ros2_ws` で実行すること
+- ビルドアーティファクト（build/, install/, log/）はgitignoreに含まれています

@@ -2,29 +2,40 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 from std_msgs.msg import String
 
 
 class RelayNode(Node):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('relay_node')
+        
+        # QoS設定を明示的に定義
+        qos_profile = QoSProfile(
+            depth=10,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.VOLATILE
+        )
         
         self.subscription = self.create_subscription(
             String,
             '/from_human',
             self.from_human_callback,
-            10
+            qos_profile
         )
         
         self.publisher = self.create_publisher(
             String,
             '/to_human',
-            10
+            qos_profile
         )
+        
+        # subscriptionを参照して未使用変数警告を回避  
+        _ = self.subscription
         
         self.get_logger().info('Relay node started: /from_human -> /to_human')
 
-    def from_human_callback(self, msg):
+    def from_human_callback(self, msg: String) -> None:
         self.get_logger().info(f'Received: {msg.data}')
         
         relay_msg = String()

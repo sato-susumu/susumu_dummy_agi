@@ -4,13 +4,19 @@ ROS2 ダミーAGIパッケージ - トピックリレー機能
 
 ## 概要
 
-このパッケージは、トピックリレー機能を実演するシンプルなROS2ノードを提供します。より複雑なAGI関連ROS2アプリケーションのテンプレートとして使用できます。
+このパッケージは、ROS2トピックを使用したメッセージリレーとClaude AIによる処理機能を提供します。人間からのメッセージを受け取り、Claude AIで処理して結果を返すAGIシステムのプロトタイプです。
 
 ## 機能
 
-- トピックの購読と発行
-- 設定可能なトピックでのメッセージリレー
-- ROS2ノードライフサイクル管理
+### RelayNode（基本リレー）
+- シンプルなトピックリレー機能
+- `/from_human` → `/to_human` への直接転送
+
+### ClaudeProcessorNode（AI処理）
+- Claude AIを使用したメッセージ処理
+- 非同期処理による高速レスポンス
+- バックグラウンド処理とリアルタイム進捗通知
+- エラーハンドリングとタイムアウト制御
 
 ## 依存関係
 
@@ -39,16 +45,34 @@ source install/setup.bash
 
 ## 使用方法
 
-### リレーノードの実行
+### 基本リレーノードの実行
 
 ```bash
 ros2 run susumu_dummy_agi relay_node
 ```
 
+### Claude処理ノードの実行 (動作未確認)
+
+```bash
+ros2 run susumu_dummy_agi claude_processor_node
+```
+
 ### トピック
 
-- **購読トピック**: `/input_topic` (std_msgs/String)
-- **発行トピック**: `/output_topic` (std_msgs/String)
+両ノード共通:
+- **購読トピック**: `/from_human` (std_msgs/String)
+- **発行トピック**: `/to_human` (std_msgs/String)
+
+### テスト方法
+
+別ターミナルでメッセージを送信:
+```bash
+# メッセージ送信
+ros2 topic pub /from_human std_msgs/String "data: 'こんにちは、Claudeで翻訳してください'"
+
+# メッセージ受信確認
+ros2 topic echo /to_human
+```
 
 ### パラメータ
 
